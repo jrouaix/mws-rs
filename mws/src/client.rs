@@ -1,5 +1,4 @@
 use reqwest;
-pub use reqwest::header::ContentType;
 use reqwest::Response;
 pub use reqwest::{Method, StatusCode};
 use result::{MwsError, MwsResult};
@@ -160,7 +159,7 @@ impl Client {
     parameters: P,
     body: R,
     content_md5: String,
-    content_type: ContentType,
+    content_type: String,
   ) -> MwsResult<reqwest::Response>
   where
     P: SerializeMwsParams,
@@ -186,7 +185,7 @@ impl Client {
     self
       .http_client
       .request(method, &url)
-      .header(content_type)
+      .header(reqwest::header::CONTENT_TYPE, content_type)
       .body(reqwest::Body::new(body))
       .send()
       .map_err(MwsError::from)
@@ -220,7 +219,7 @@ impl Client {
     parameters: P,
     body: R,
     content_md5: String,
-    content_type: ContentType,
+    content_type: String,
   ) -> MwsResult<T>
   where
     P: SerializeMwsParams,
@@ -276,7 +275,7 @@ impl Client {
     let headers = resp
       .headers()
       .iter()
-      .map(|view| (view.name().to_string(), view.value_string()))
+      .map(|kv| (kv.0.to_string(), kv.1.to_str().unwrap().to_owned()))
       .collect();
 
     let mut body = vec![];
@@ -335,7 +334,7 @@ mod tests {
     let client = get_test_client();
     let (status, _, body) = client
       .request_raw(
-        Method::Post,
+        Method::POST,
         "/Orders/2013-09-01",
         "2013-09-01",
         "GetServiceStatus",
@@ -349,7 +348,7 @@ mod tests {
     use std::io::Cursor;
     let (status, _, body) = client
       .request_raw(
-        Method::Post,
+        Method::POST,
         "/Fake/2013-09-01",
         "2013-09-01",
         "GetServiceStatus",
