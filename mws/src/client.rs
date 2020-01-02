@@ -68,11 +68,11 @@ impl ErrorResponseInfo {
   }
 }
 
-impl FromXmlStream<Stream<reqwest::Response>> for ErrorResponseInfo {
-  fn from_xml(s: &mut Stream<reqwest::Response>) -> MwsResult<ErrorResponseInfo> {
-    ErrorResponseInfo::from_xml_stream(s)
-  }
-}
+// impl FromXmlStream<Stream<reqwest::Response>> for ErrorResponseInfo {
+//   fn from_xml(s: &mut Stream<reqwest::Response>) -> MwsResult<ErrorResponseInfo> {
+//     ErrorResponseInfo::from_xml_stream(s)
+//   }
+// }
 
 impl FromXmlStream<Stream<::std::io::Cursor<String>>> for ErrorResponseInfo {
   fn from_xml(s: &mut Stream<::std::io::Cursor<String>>) -> MwsResult<ErrorResponseInfo> {
@@ -116,7 +116,7 @@ impl Client {
     }
   }
 
-  pub fn request<P>(
+  pub async fn request<P>(
     &self,
     method: Method,
     path: &str,
@@ -142,12 +142,13 @@ impl Client {
       .generate_url(method.clone(), path, version, action)?
       .to_string();
     //println!("request: {}", url);
-    self
+    let response = self
       .http_client
       .request(method, &url)
-      .send()
-      .map_err(MwsError::from)
-      .and_then(handle_error_status)
+      .send().await?;
+      // .map_err(MwsError::from)
+    let response = handle_error_status(response);
+    return response;
   }
 
   pub fn request_with_body<P, R>(

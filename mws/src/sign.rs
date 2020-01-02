@@ -9,7 +9,7 @@ use result::{MwsError, MwsResult};
 use std::cmp::{Ord, Ordering};
 use std::path::Path;
 use types::ToIso8601;
-use url::percent_encoding::{percent_encode, EncodeSet};
+use percent_encoding::{percent_encode, PercentEncode};
 
 /// URL encode the parameter name and values according to the following rules:
 /// - Do not URL encode any of the unreserved characters that RFC 3986 defines. These unreserved characters are A-Z, a-z, 0-9, hyphen ( - ), underscore ( _ ), period ( . ), and tilde ( ~ ).
@@ -18,31 +18,31 @@ use url::percent_encoding::{percent_encode, EncodeSet};
 /// - Percent encode the space character as %20. Do not percent encode the space character as +, as some common encoding schemes do.
 #[derive(Clone)]
 struct ParameterEncodeSet;
-impl EncodeSet for ParameterEncodeSet {
-  fn contains(&self, byte: u8) -> bool {
-    // 0-9
-    if byte >= 0x30 && byte <= 0x39 {
-      return false;
-    }
+// impl PercentEncode for ParameterEncodeSet {
+//   fn contains(&self, byte: u8) -> bool {
+//     // 0-9
+//     if byte >= 0x30 && byte <= 0x39 {
+//       return false;
+//     }
 
-    // A-Z
-    if byte >= 0x41 && byte <= 0x5A {
-      return false;
-    }
+//     // A-Z
+//     if byte >= 0x41 && byte <= 0x5A {
+//       return false;
+//     }
 
-    // a-z
-    if byte >= 0x61 && byte <= 0x7A {
-      return false;
-    }
+//     // a-z
+//     if byte >= 0x61 && byte <= 0x7A {
+//       return false;
+//     }
 
-    // hyphen ( - ), underscore ( _ ), period ( . ), and tilde ( ~ )
-    if byte == 0x2D || byte == 0x5F || byte == 0x2E || byte == 0x7E {
-      return false;
-    }
+//     // hyphen ( - ), underscore ( _ ), period ( . ), and tilde ( ~ )
+//     if byte == 0x2D || byte == 0x5F || byte == 0x2E || byte == 0x7E {
+//       return false;
+//     }
 
-    true
-  }
-}
+//     true
+//   }
+// }
 
 /// Query string parameter key/value pair
 #[derive(Debug, Eq, PartialEq, PartialOrd, Clone)]

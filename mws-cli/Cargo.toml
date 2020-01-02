@@ -6,7 +6,7 @@ edition = "2018"
 
 [dependencies]
 mws = { path = "../mws" }
-dotenv = "0.8.0"
+dotenv = "0.15.0"
 structopt = { version = "0.3", default-features = false }
 chrono = { version = "0.4" }
-encoding_rs = "0.8.20"
+encoding_rs = "0.8.22"

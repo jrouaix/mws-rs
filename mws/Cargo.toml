@@ -4,24 +4,30 @@ version = "0.12.0"
 authors = ["Flux Xu <fluxxu@gmail.com>"]
 license = "MIT"
 description = "Client library for Amazon Marketplace Web Service (Amazon MWS)"
-
+edition = "2018"
 
 [dependencies]
-base64 = "0.2.1"
+base64 = "0.11.0"
 rust-crypto = "0.2.36"
-reqwest = "0.9.24"
-url = "1.2.4"
+reqwest = "0.10.0"
+# reqw = { package = "reqwest", version = "0.10.0" }
+
+# uuid = "0.8.1"
+percent-encoding = "2.1.0"
+# perenc = { package = "percent-encoding", version = "2.1.0" }
+
+url = { version = "2.1.0", features = ["serde"] }
 chrono = { version = "0.4", features = ["serde"] }
-failure = "0.1.2"
-failure_derive = "0.1.2"
-futures = "0.1"
-csv = "1.0"
-xml-rs = "0.6.1"
-serde = "1.0.0"
-serde_derive = "1.0.0"
-mws-derive = { path="../mws-derive" }
-lazy_static = "1.0"
+failure = "0.1.6"
+failure_derive = "0.1.6"
+futures = "0.3.1"
+csv = "1.1.1"
+xml-rs = "0.8.0"
+serde = "1.0.104"
+serde_derive = "1.0.104"
+mws-derive = { path = "../mws-derive" }
+lazy_static = "1.4.0"
 
 [dev-dependencies]
-dotenv = "0.8.0"
-pretty_assertions = "0.5.1"
+dotenv = "0.15.0"
+pretty_assertions = "0.6.1"

@@ -9,6 +9,7 @@ extern crate crypto;
 extern crate failure;
 extern crate reqwest;
 extern crate url;
+extern crate percent_encoding;
 extern crate xml;
 #[macro_use]
 extern crate failure_derive;
